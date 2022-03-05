@@ -1,3 +1,6 @@
+import math
+import random
+import itertools
 from typing import Tuple
 from collections import deque
 
@@ -72,13 +75,17 @@ class TSPOptimisation(BaseOptimisationProblem):
         """Resets the state of the TSP"""
         self.state = self._random()[0]
 
-    def generate_population(self, n: int) -> None:
+    def generate_population(self, n: int) -> int:
         """Generate a random population of n nodes
 
         Args:
             n: Number of nodes in population
+
+        Returns:
+            Number of nodes actually generated
         """
         self.population = np.array(self._random(n))
+        return len(self.population)
 
     @property
     def mate_probabilities(self) -> np.ndarray:
@@ -99,7 +106,18 @@ class TSPOptimisation(BaseOptimisationProblem):
         Returns:
             List of state permutations
         """
-        return [np.random.permutation(self.length) for _ in range(n)]
+        # Get an exhaustive list of permutations if possible
+        if n >= math.factorial(self.length):
+            print("hello")
+            return list(itertools.permutations(list(range(self.length))))
+
+        # Otherwise, get a list of n unique permutations
+        permutations = set()
+        while len(permutations) < n:
+            temp = list(range(self.length))
+            random.shuffle(temp)
+            permutations.add(tuple(temp))
+        return [list(state) for state in permutations]
 
     def reproduce(
         self, parent_1: np.ndarray, parent_2: np.ndarray, mutation_prob: float

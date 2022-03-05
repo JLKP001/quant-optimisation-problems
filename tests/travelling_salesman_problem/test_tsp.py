@@ -24,7 +24,7 @@ def test_tsp_fitness(state, expected):
 
 def test_travelling_salesman_problem():
     coordinates = [
-        (np.random.randint(-25, 25), np.random.randint(-25, 25)) for _ in range(15)
+        (np.random.randint(-25, 25), np.random.randint(-25, 25)) for _ in range(10)
     ]
     fitness_fn = TSPFitnessFunction(coordinates=coordinates)
 

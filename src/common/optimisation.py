@@ -1,4 +1,5 @@
 import abc
+import random
 from typing import Tuple
 
 import numpy as np
@@ -69,7 +70,7 @@ class BaseOptimisationProblem(abc.ABC):
         """Sets state of entire population. Also calculates fitness"""
         self._population = population
         self._population_fitness = np.array(
-            [self.calc_fitness(state) for state in self.population]
+            [self.calc_fitness(state) for state in population]
         )
 
     @property
@@ -95,11 +96,14 @@ class BaseOptimisationProblem(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def generate_population(self, n: int) -> None:
+    def generate_population(self, n: int) -> int:
         """Generate a random population of n nodes
 
         Args:
             n: Number of nodes in population
+
+        Returns:
+            Number of nodes actually generated
         """
         pass
 
@@ -155,11 +159,11 @@ def genetic_algorithm(
     fitness_history = []
 
     if random_seed:
+        random.seed(random_seed)
         np.random.seed(random_seed)
 
     problem.reset()
-    problem.generate_population(n_population)
-
+    n_population = problem.generate_population(n_population)
     attempts = 0
     iterations = 0
     while iterations < max_iterations:
