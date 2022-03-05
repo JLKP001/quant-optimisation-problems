@@ -139,7 +139,7 @@ def genetic_algorithm(
     """Implementation of a standard genetic algorithm for optimisation
 
     Args:
-        problem: _description_
+        problem: Optimisation problem
         n_population: Population size
         max_attempts: Maximum number of attempts to find a better state at each step
         max_iterations: Maximum number of iterations
